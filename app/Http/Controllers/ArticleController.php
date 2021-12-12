@@ -18,7 +18,7 @@ class ArticleController extends Controller
     public function index()
     {
         $data=[
-            "message"=>"informacion",
+            "message"=>"Listado de articulos",
             "data"=>Article::all()];
 
         return response()->json($data, 200);
@@ -43,7 +43,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $articulo=Article::create($request->all());
-        return $articulo;
+        return response()->json($articulo, 201);
     }
 
     /**
@@ -52,9 +52,9 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Article $article)
     {
-        return Article::find($request->id);
+        return $article;
     }
 
     /**
@@ -75,11 +75,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request,Article $article)
     {
-        $article=Article::find($request->id);
         $article->update($request->all());
-        return $article;
+        return response()->json($article, 200);
     }
 
     /**
@@ -88,10 +87,9 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Article $article)
     {
-        $article=Article::find($request->id);
-        $article->delete($request->id);
-
+        $article->delete();
+        return response()->json(null, 204);
     }
 }
