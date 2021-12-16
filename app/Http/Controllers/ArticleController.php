@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleCollection;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -17,21 +21,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $data=[
-            "message"=>"Listado de articulos",
-            "data"=>Article::all()];
-
-        return response()->json($data, 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+       return ArticleResource::collection(Article::paginate(7));
     }
 
     /**
@@ -42,8 +32,10 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $articulo=Article::create($request->all());
-        return response()->json($articulo, 201);
+       /*  $articulo=Article::create($request->all());
+        return response()->json($articulo, 201); */
+
+        return $request->file("image")->store("public/imagenes");
     }
 
     /**
@@ -54,20 +46,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return $article;
+        return ArticleResource::make($article);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Article $article)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
