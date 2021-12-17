@@ -18,10 +18,10 @@ class ArticleResource extends JsonResource
             'id'=>$this->id,
             'title'=>$this->title,
             'body'=>$this->body,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'comments'=>CommentResource::collection($this->comments),
-            'user'=>UserResource::make($this->user),
+            'links'=>[
+                'rel'=>'user',
+                'href'=>UserResource::make($this->user)
+            ]
         ];
     }
 }

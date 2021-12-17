@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\CommentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,7 +22,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-       return ArticleResource::collection(Article::paginate(7));
+       return ArticleCollection::make(Article::paginate(10));
     }
 
     /**
@@ -46,7 +47,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return ArticleResource::make($article);
+        return response()->json(ArticleResource::make($article),200);
     }
     
     /**
@@ -71,6 +72,14 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
-        return response()->json(null, 204);
+        return response()->json(null, 404);
     }
+
+    public function show_comments(Article $article)
+    {
+        $comments=$article->comments;
+        return CommentResource::collection($comments);
+    }
+
+    
 }
