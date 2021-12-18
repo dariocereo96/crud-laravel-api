@@ -20,11 +20,11 @@ use App\Http\Controllers\UserController;
 
 /****************************************** Rutas Autentificacion *******************************************************/
 
-Route::post('login', [UserController::class, 'login'])->name('users.login');
+Route::post('login', [UserController::class, 'login'])->name('login');
 
-Route::post('register', [UserController::class, 'store'])->name('users.store');
+Route::post('register', [UserController::class, 'register'])->name('register');
 
-
+Route::get('user', [UserController::class, 'show'])->name('user.show')->middleware(['auth:sanctum']);
 
 /*************************************** Rutas al recurso article *******************************************************/
 
@@ -34,7 +34,7 @@ Route::get('articles/{article}', [ArticleController::class, 'show'])->name('arti
 
 Route::post('articles', [ArticleController::class, 'store'])->name('articles.store');
 
-Route::put('articles/{article}', [ArticleController::class, 'update'])->name('articles.update');
+Route::put('articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
 
 Route::delete('articles/{article}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 

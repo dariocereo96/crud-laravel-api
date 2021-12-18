@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-       return UserResource::collection(User::paginate(7));
+
     }
 
     /**
@@ -28,13 +28,13 @@ class UserController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+   /*  public function show(User $user)
     {
-        return response()->json(UserResource::make($user),200);
-    }
+
+    } */
 
 
-    public function store(Request $request)
+    public function register(Request $request)
     {
         $user = User::create([
             'name' => $request['name'],
@@ -60,7 +60,13 @@ class UserController extends Controller
         return  response()->json([
             "message"=>"Sesion iniciada correctamente",
             'token' => Auth::user()->createToken('API Token')->plainTextToken,
+            'datos'=>Auth::user(),
             "type"=>"bearer"
         ],201);
+    }
+
+    public function show()
+    {
+        return response()->json(['user'=>Auth::user()], 200);
     }
 }

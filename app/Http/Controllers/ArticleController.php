@@ -31,7 +31,7 @@ class ArticleController extends Controller
      * @param  \App\Http\Requests\StoreArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
        /*  $articulo=Article::create($request->all());
         return response()->json($articulo, 201); */
@@ -49,7 +49,7 @@ class ArticleController extends Controller
     {
         return response()->json(ArticleResource::make($article),200);
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -57,10 +57,10 @@ class ArticleController extends Controller
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Article $article)
+    public function update(UpdateArticleRequest $request)
     {
-        $article->update($request->all());
-        return response()->json($article, 200);
+        //
+        return response()->json($request['id'], 200);
     }
 
     /**
@@ -81,5 +81,5 @@ class ArticleController extends Controller
         return CommentResource::collection($comments);
     }
 
-    
+
 }
