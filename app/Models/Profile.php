@@ -11,12 +11,12 @@ class Profile extends Model
 
 
     /**
-     * Get the user associated with the Profile
+     * Get the user that owns the Profile
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

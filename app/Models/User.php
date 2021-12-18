@@ -64,4 +64,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+ /**
+  * Get the profile associated with the User
+  *
+  * @return \Illuminate\Database\Eloquent\Relations\HasOne
+  */
+ public function profile(): HasOne
+ {
+     return $this->hasOne(Profile::class);
+ }
 }
