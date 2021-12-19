@@ -4,7 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,54 +26,53 @@ Route::post('login', [UserController::class, 'login'])->name('login');
 //Crear nuevo usuario
 Route::post('register', [UserController::class, 'register'])->name('register');
 
-//Cerrar sesion
-Route::post('logout', [UserController::class, 'logout'])->name('logout');
-
 //Obtener todos los articulos del blog
 Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
 
-//Obtener un articulo especifico
-Route::get('articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+//Obtener un articulo
+Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
 //Obtener los comentarios del articulo
-Route::get('articles/{id}/comments', [CommentController::class, 'index'])->name('comments.index');
+Route::get('articles/{article}/comments', [ArticleController::class, 'comments'])->name('articles.comments');
 
+//Obtener perfiles del blog
+Route::get('profiles/', [ProfileController::class, 'index'])->name('index');
 
-Route::middleware(['auth', 'sanctum'])->group(function () {
+//Obtener un perfil del blog
+Route::get('profiles/{profile}', [ProfileController::class, 'show'])->name('show');
 
-    //Crear un articulo
-    Route::post('articles', [ArticleController::class, 'store'])->name('articles.store');
+//obtener los articulos de un perfil
+Route::get('profiles/{profile}/articles', [ProfileController::class, 'articles'])->name('profiles.show');
 
-    //Editar un articulo
-    Route::put('articles', [ArticleController::class, 'update'])->name('articles.update');
+//Rutas protegidas
+Route::middleware('auth:sanctum')->group(function () {
 
-    //Eliminar un articulo
-    Route::delete('articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+    //Mostrar los articulos creado por el usuario
+    Route::get('admin/articles', [AdminArticleController::class, 'index'])->name('admin.articles.index');
 
-    //Crear un comentario al articulo
-    Route::post('articles/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    //Crear un nuevo articulo
+    Route::post('admin/articles', [AdminArticleController::class, 'store'])->name('admin.articles.store');
 
-    //Obtener un comentario especifico
-    Route::get('comments/{id}', [CommentController::class, 'show'])->name('comments.show');
+    //Editar un articulo del usuario
+    Route::put('admin/articles/{article}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
 
-    //Editar un comentario
-    Route::put('comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+//     // //Eliminar un articulo del usuario
+//     // Route::delete('articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
 
-    //Eliminar un comentario
-    Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+//     // //Obtener perfil del usuario
+//     // Route::get('profile', [ProfileController::class, 'show'])->name('admin.profile.show');
 
-    //Obtener perfil del usuario
-    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+//     // //Crear perfil del usuario
+//     // Route::post('profile', [ProfileController::class, 'store'])->name('admin.profile.store');
 
-    //Editar el perfil del usuario
-    Route::put('profile', [CommentController::class, 'update'])->name('comments.update');
+//     // //Editar el perfil del usuario
+//     // Route::put('profile', [ProfileController::class, 'update'])->name('admin.profile.update');
 
+//     // //Cerrar sesion
+//     // Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
 
 });
-
-
-
 
 
 

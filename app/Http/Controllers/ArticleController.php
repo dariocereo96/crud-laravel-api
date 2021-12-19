@@ -15,22 +15,13 @@ use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    //Mostrar los articulos del blog
     public function index()
     {
-       return ArticleCollection::make(Article::paginate(10));
+       return ArticleResource::collection(Article::paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreArticleRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreArticleRequest $request)
     {
        /*  $articulo=Article::create($request->all());
@@ -39,24 +30,13 @@ class ArticleController extends Controller
         return $request->file("image")->store("public/imagenes");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
+    //Obtener un articulo del blog
     public function show(Article $article)
     {
-        return response()->json(ArticleResource::make($article),200);
+        return ArticleResource::make($article);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateArticleRequest  $request
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(UpdateArticleRequest $request)
     {
         //
@@ -75,11 +55,10 @@ class ArticleController extends Controller
         return response()->json(null, 404);
     }
 
-    public function show_comments(Article $article)
+    //Mostrar comentarios del articulo
+    public function comments(Article $article)
     {
-        $comments=$article->comments;
+        $comments=$article->comments()->paginate(10);
         return CommentResource::collection($comments);
     }
-
-
 }

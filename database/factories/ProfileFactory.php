@@ -19,11 +19,12 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'names'=>$this->faker->name,
-            'lastnames'=>$this->faker->lastname,
+            'name'=>$this->faker->name,
+            'lastname'=>$this->faker->lastname,
             'biography'=>$this->faker->sentence,
             'email'=>$this->faker->email,
             'user_id'=>User::factory(),
+            'photo'=>'not_found',
         ];
     }
 }

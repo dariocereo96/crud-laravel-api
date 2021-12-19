@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Profile;
 
 class User extends Authenticatable
 {
@@ -60,7 +61,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function articles(): HasMany
+    public function articles()
     {
         return $this->hasMany(Article::class);
     }
@@ -70,7 +71,7 @@ class User extends Authenticatable
   *
   * @return \Illuminate\Database\Eloquent\Relations\HasOne
   */
- public function profile(): HasOne
+ public function profile()
  {
      return $this->hasOne(Profile::class);
  }
