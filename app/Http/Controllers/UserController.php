@@ -9,27 +9,24 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Profile;
 use App\Http\ProfileResource;
+use App\Http\Requests\StoreUserRequest;
 
 
 class UserController extends Controller
 {
 
-    public function index()
-    {
-
-    }
-
     //Crear un nuevo usuario
-    public function register(Request $request)
+    public function store(StoreUserRequest $request)
     {
         $user = User::create([
             'name' => $request['name'],
-            'password' => bcrypt($request['password']),
             'email' => $request['email'],
+            'password' => bcrypt($request['password']),
         ]);
 
         return  response()->json([
-            'mensaje'=>'Usuario creado correctamente',
+            'messaje'=>'Usuario creado correctamente',
+            'user'=>$user,
             'token' => $user->createToken('api_token')->plainTextToken,
             'type'=>'bearer',
         ],201);
@@ -41,14 +38,24 @@ class UserController extends Controller
         $credenciales=$request->only('email','password');
 
         if (!Auth::attempt($credenciales)) {
-            return  response()->json(['message'=>'Error en su usuario y contraseña, intentelo nuevamente'],401);
+            return response()->json(['error'=>'Error en el usuario o la contraseña'],401);
         }
 
         return  response()->json([
             'message'=>'Sesion iniciada correctamente',
-            'token' => Auth::user()->createToken('api_token')->plainTextToken,
+            'user'=>Auth::user(),
+            'token' =>Auth::user()->createToken('api_token')->plainTextToken,
             'type'=>'bearer',
         ],200);
+    }
+
+
+    public function logout()
+    {
+        Auth::user()->tokens()->delete();
+        return response()->json([
+            'message'=>'Sesion cerrada',
+        ], 200);
     }
 
 }

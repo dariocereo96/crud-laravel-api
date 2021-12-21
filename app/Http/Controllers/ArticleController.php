@@ -43,18 +43,6 @@ class ArticleController extends Controller
         return response()->json($request['id'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Article $article)
-    {
-        $article->delete();
-        return response()->json(null, 404);
-    }
-
     //Mostrar comentarios del articulo
     public function comments(Article $article)
     {

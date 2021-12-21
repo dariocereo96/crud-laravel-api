@@ -18,7 +18,6 @@ class CreateProfilesTable extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('biography');
-            $table->string('email');
             $table->string('photo');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

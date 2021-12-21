@@ -26,6 +26,12 @@ class AdminArticleController extends Controller
 
     }
 
+     //Obtener un articulo del blog
+     public function show(Article $article)
+     {
+        return ArticleResource::make($article);
+     }
+
     public function update(Request $request,Article $article)
     {
         $article->update($request->all());
@@ -33,5 +39,11 @@ class AdminArticleController extends Controller
             'message'=>'Articulo actualizado',
             'data'=>$request->all(),
         ], 200);
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return response()->json(['message'=>'Se elimino el articulo'], 404);
     }
 }
