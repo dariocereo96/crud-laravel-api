@@ -18,44 +18,84 @@ class UserController extends Controller
     //Crear un nuevo usuario
     public function store(StoreUserRequest $request)
     {
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-        ]);
+        try
+        {
+            $user = User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+            ]);
 
-        return  response()->json([
-            'messaje'=>'Usuario creado correctamente',
-            'user'=>$user,
-            'token' => $user->createToken('api_token')->plainTextToken,
-            'type'=>'bearer',
-        ],201);
+            return  response()->json([
+                'success'=>true,
+                'message'=>'Se creo el usuario',
+                'data'=>[
+                    'token'=>$user->createToken('api_token')->plainTextToken,
+                    'type'=>'bearer',
+                ]
+            ],201);
+
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Error en la conexion',
+            ], 500);
+        }
     }
 
     //Iniciar sesion
-    public function login(Request $request){
+    public function login(Request $request)
+    {
+        try
+        {
+            $credenciales=$request->only('email','password');
 
-        $credenciales=$request->only('email','password');
-
-        if (!Auth::attempt($credenciales)) {
-            return response()->json(['error'=>'Error en el usuario o la contraseña'],401);
+            if (!Auth::attempt($credenciales)) 
+            {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Error de credenciales',
+                ],401);
+            }
+            Auth::user()->tokens()->delete();    
+            
+            return  response()->json([
+                'success'=>true,
+                'message'=>'Inicio de sesion exitoso',
+                'data'=>[
+                    'token'=>Auth::user()->createToken('api_token')->plainTextToken,
+                    'type'=>'bearer',
+                ]
+            ],201);
         }
-
-        return  response()->json([
-            'message'=>'Sesion iniciada correctamente',
-            'user'=>Auth::user(),
-            'token' =>Auth::user()->createToken('api_token')->plainTextToken,
-            'type'=>'bearer',
-        ],200);
+        catch(\Exception $exception)
+        {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Error en la conexion',
+            ],500);
+        }        
     }
 
-
+    //Cerrar sesion
     public function logout()
     {
-        Auth::user()->tokens()->delete();
-        return response()->json([
-            'message'=>'Sesion cerrada',
-        ], 200);
+        try
+        {
+            Auth::user()->tokens()->delete();
+            return response()->json([
+                'success'=>true,
+                'message'=>'Sesion cerrada',
+            ], 200);
+        }
+        catch(\Exception $exception){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Error en la conexion',
+            ], 500);
+        }
     }
 
 }

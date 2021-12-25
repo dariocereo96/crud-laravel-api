@@ -25,7 +25,7 @@ Route::post('users/login', [UserController::class, 'login'])->name('users.login'
 Route::post('users', [UserController::class, 'store'])->name('users.store');
 
 // Obtener todos los articulos del blog
-Route::get('articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('articles', [ArticleController::class, 'index'])->name('articles.index')->middleware('auth:sanctum');
 
 // //Obtener un articulo
 // //Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
@@ -43,37 +43,37 @@ Route::get('articles', [ArticleController::class, 'index'])->name('articles.inde
 // //Route::get('profiles/{profile}/articles', [ProfileController::class, 'articles'])->name('profiles.show');
 
 
-//Rutas con autentificacion
-Route::middleware('auth:sanctum')->group(function () {
+// //Rutas con autentificacion
+// Route::middleware('auth:sanctum')->group(function () {
 
-    //Mostrar los articulos creados
-    Route::get('admin/articles', [AdminArticleController::class, 'index'])->name('admin.articles.index');
+//     //Mostrar los articulos creados
+//     Route::get('admin/articles', [AdminArticleController::class, 'index'])->name('admin.articles.index');
 
-    //Obtener un articulo
-    Route::get('admin/articles/{article}', [AdminArticleController::class, 'show'])->name('admin.articles.show');
+//     //Obtener un articulo
+//     Route::get('admin/articles/{article}', [AdminArticleController::class, 'show'])->name('admin.articles.show');
 
-    //Crear un nuevo articulo
-    Route::post('admin/articles', [AdminArticleController::class, 'store'])->name('admin.articles.store');
+//     //Crear un nuevo articulo
+//     Route::post('admin/articles', [AdminArticleController::class, 'store'])->name('admin.articles.store');
 
-    //Editar un articulo
-    Route::put('admin/articles/{article}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
+//     //Editar un articulo
+//     Route::put('admin/articles/{article}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
 
-    //Eliminar un articulo
-    Route::delete('admin/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
+//     //Eliminar un articulo
+//     Route::delete('admin/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
 
-    // //Obtener perfil del usuario
-    //// Route::get('admin/profiles', [AdminProfileController::class, 'show'])->name('admin.profile.show');
+//     // //Obtener perfil del usuario
+//     //// Route::get('admin/profiles', [AdminProfileController::class, 'show'])->name('admin.profile.show');
 
-//     // //Crear perfil del usuario
-//     // Route::post('profile', [ProfileController::class, 'store'])->name('admin.profile.store');
+// //     // //Crear perfil del usuario
+// //     // Route::post('profile', [ProfileController::class, 'store'])->name('admin.profile.store');
 
-//     // //Editar el perfil del usuario
-//     // Route::put('profile', [ProfileController::class, 'update'])->name('admin.profile.update');
+// //     // //Editar el perfil del usuario
+// //     // Route::put('profile', [ProfileController::class, 'update'])->name('admin.profile.update');
 
     //Cerrar sesion
-    Route::post('users/logout', [UserController::class, 'logout'])->name('users.logout');
+    Route::post('users/logout', [UserController::class, 'logout'])->name('users.logout')->middleware('auth:sanctum');
 
-});
+// });
 
 
 

@@ -19,14 +19,22 @@ class ArticleController extends Controller
     //Mostrar los articulos del blog
     public function index()
     {
-       return ArticleResource::collection(Article::paginate(10));
+        try
+        {
+            $articles=ArticleCollection::make(Article::paginate(7));
+            return $articles;
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json([
+                'status'=>'error',
+                'message'=>'Error en la conexion a la Base de Datos',
+            ], 500);
+        }
     }
 
     public function store(StoreArticleRequest $request)
     {
-       /*  $articulo=Article::create($request->all());
-        return response()->json($articulo, 201); */
-
         return $request->file("image")->store("public/imagenes");
     }
 
@@ -39,7 +47,6 @@ class ArticleController extends Controller
 
     public function update(UpdateArticleRequest $request)
     {
-        //
         return response()->json($request['id'], 200);
     }
 

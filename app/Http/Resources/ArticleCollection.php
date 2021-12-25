@@ -15,8 +15,8 @@ class ArticleCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'type'=>'Articles',
-            'data'=>$this->collection
+            'status'=>'success',
+            'data'=>ArticleResource::collection($this->collection),
         ];
     }
 }
