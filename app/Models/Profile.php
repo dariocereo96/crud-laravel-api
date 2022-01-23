@@ -10,6 +10,11 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'lastname',
+        'photo',
+    ];
 
     /**
      * Get the user that owns the Profile

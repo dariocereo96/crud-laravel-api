@@ -24,23 +24,25 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:users',
             'email'=>'required|email|unique:users',
-            'password'=>'required|confirmed',
+            'password'=>'required',
+            'name'=>'required',
+            'lastname'=>'required',
+            'photo'=>'image',
         ];
     }
-
 
     public function messages()
     {
         return [
-            'name.required'=>'Ingrese un nombre de usuario',
-            'name.unique'=>'El nombre de usuario ya existe',
             'email.required'=>'Ingrese un email',
             'email.email'=>'Ingrese un email valido',
             'email.unique'=>'El email ya esta registrado',
             'password.required'=>'Ingrese una contraseña',
-            'password.confirmed'=>'Confirme su contraseña',
+            'name.required'=>'Ingrese su nombre',
+            'lastname.required'=>'Ingrese su apellido',
+            'photo'=>'Formato invalido de imagen',
+            // 'password.confirmed'=>'Confirme su contraseña',
         ];
     }
 }

@@ -24,8 +24,9 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'body'=>'required'
+            'title'=>['required','unique:articles,title,'.$this->id],
+            'body'=>'required',
+            'status'=>'required',
         ];
     }
 }

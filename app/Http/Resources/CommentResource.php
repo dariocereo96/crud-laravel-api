@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
-
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource
@@ -18,6 +18,7 @@ class CommentResource extends JsonResource
             'id'=>$this->id,
             'body'=>$this->body,
             'create_at'=>$this->created_at,
+            'profile'=>ProfileResource::make($this->user->profile),
         ];
     }
 }

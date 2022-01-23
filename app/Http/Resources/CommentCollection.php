@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ArticleCollection extends ResourceCollection
+class CommentCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -17,7 +17,7 @@ class ArticleCollection extends ResourceCollection
         return [
             'success'=>true,
             'message'=>'Datos obtenidos correctamente',
-            'data'=>ArticleResource::collection($this->collection),
+            'data'=>CommentResource::collection($this->collection),
         ];
     }
 }

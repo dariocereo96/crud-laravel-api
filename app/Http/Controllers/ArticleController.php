@@ -18,42 +18,55 @@ class ArticleController extends Controller
 
     //Mostrar los articulos del blog
     public function index()
-    {
+    { 
         try
         {
-            $articles=ArticleCollection::make(Article::paginate(7));
+            $articles=ArticleCollection::make(Article::paginate(10));
             return $articles;
         }
         catch(\Exception $exception)
         {
             return response()->json([
-                'status'=>'error',
-                'message'=>'Error en la conexion a la Base de Datos',
-            ], 500);
+                'success'=>false,
+                'message'=>'Ocurrio un problema',
+                'errors'=>[
+                    'info'=>'Error en el sistema',
+                ],
+            ],500);
         }
     }
 
-    public function store(StoreArticleRequest $request)
-    {
-        return $request->file("image")->store("public/imagenes");
-    }
-
     //Obtener un articulo del blog
-    public function show(Article $article)
+    public function show($id)
     {
-        return ArticleResource::make($article);
-    }
-
-
-    public function update(UpdateArticleRequest $request)
-    {
-        return response()->json($request['id'], 200);
-    }
-
-    //Mostrar comentarios del articulo
-    public function comments(Article $article)
-    {
-        $comments=$article->comments()->paginate(10);
-        return CommentResource::collection($comments);
+        try
+        {
+            $article=Article::find($id);
+            if($article==null){
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Ocurrio un problema',
+                    'errors'=>[
+                        'info'=>'No se encontro articulo',
+                    ],
+                ],404);
+            }
+            return response()->json([
+                'success'=>true,
+                'message'=>'Articulo encontrado',
+                'data'=>ArticleResource::make($article),
+            ], 200);
+           
+        }
+        catch(\Exception $exception)
+        {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Ocurrio un problema',
+                'errors'=>[
+                    'info'=>'Error en el sistema',
+                ],
+            ],500);
+        }
     }
 }

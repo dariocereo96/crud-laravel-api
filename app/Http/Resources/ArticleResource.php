@@ -18,9 +18,10 @@ class ArticleResource extends JsonResource
             'id'=>$this->id,
             'title'=>$this->title,
             'body'=>$this->body,
+            'status'=>$this->status,
             'create_at'=>$this->created_at,
             'update_at'=>$this->updated_at,
-            // 'profile'=>ProfileResource::make($this->user->profile),
+            'profile'=>ProfileResource::make($this->user->profile),
         ];
     }
 }
