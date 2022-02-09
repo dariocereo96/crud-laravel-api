@@ -1,12 +1,15 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Mail\ContactoMailable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\AdminArticleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +36,14 @@ Route::get('articles/{id}', [ArticleController::class, 'show'])->name('articles.
 
 //Obtener los comentarios del article
 Route::get('articles/{id}/comments', [CommentController::class, 'index'])->name('comments.index');
+
+//Enviar mensaje de contacto
+Route::get('contacto',function()
+{
+    $correo = new ContactoMailable;
+    Mail::to('pablodariocerezo@gmail.com')->send($correo);
+    return response()->json(['message'=>'Correo enviado'],200);
+});
 
 
 //Rutas con autentificacion

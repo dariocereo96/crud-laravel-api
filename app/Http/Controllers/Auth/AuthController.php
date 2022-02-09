@@ -23,34 +23,26 @@ class AuthController extends Controller
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
                 ]);
-
                 $user->profile()->create([
                     'name'=>$request->name,
                     'lastname'=>$request->lastname,
                     'photo'=>$request->hasfile('photo')?$request->file('photo')->store('profile','public'):"notFound",
                 ]);
-
                 return  response()->json([
-                    'success'=>true,
-                    'message'=>'Se registro el usuario',
-                    'data'=>[
-                        'token'=>$user->createToken('api_token')->plainTextToken,
-                        'type'=>'bearer',
-			            'profile'=>ProfileResource::make($user->profile),
-                    ],
+                    'token'=>$user->createToken('api_token')->plainTextToken,
+                    'type'=>'bearer',
+                    'profile'=>ProfileResource::make($user->profile),
                 ],201);
             }
             catch(\Exception $exception)
             {
                 return response()->json([
-                    'success'=>false,
                     'errors'=>[
                         'info'=>'Ocurrio un problema en la aplicacion',
                     ],
                 ],500);
             }
         },5);
-        
     }
 
     //Iniciar sesion
@@ -59,31 +51,23 @@ class AuthController extends Controller
         try
         {
             $credenciales=$request->only('email','password');
-
             if (!Auth::attempt($credenciales)) 
             {
                 return response()->json([
-                    'success'=>false,
                     'errors'=>[
                         'info'=>'Error en las credenciales',
                     ],
                 ],400);
             }
-
             return  response()->json([
-                'success'=>true,
-                'message'=>'Sesion iniciada',
-                'data'=>[
                     'token'=>Auth::user()->createToken('api_token')->plainTextToken,
                     'type'=>'bearer',
 		            'profile'=>ProfileResource::make(Auth::user()->profile),
-                ]
             ],200);
         }
         catch(\Exception $exception)
         {
             return response()->json([
-                'success'=>false,
                 'errors'=>[
                     'info'=>'Ocurrio un problema en la aplicacion',
                 ]
@@ -98,13 +82,12 @@ class AuthController extends Controller
         {
             Auth::user()->tokens()->where('id',currentAccessToken())->delete();
             return response()->json([
-                'success'=>true,
                 'message'=>'Sesion cerrada',
             ], 200);
         }
-        catch(\Exception $exception){
+        catch(\Exception $exception)
+        {
             return response()->json([
-                'success'=>false,
                 'errors'=>[
                     'info'=>'Ocurrio un problema en la aplicacion',
                 ],
